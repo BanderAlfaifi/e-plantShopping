@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
 import { addItem } from "./CartSlice";
+import { useSelector, useDispatch } from "react-redux";
+
 function ProductList() {
   const [addedToCart, setAddedToCart] = useState({});
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+  const cart = useSelector((state) => state.cart.items);
+  const dispatch = useDispatch();
 
   const plantsArray = [
     {
@@ -292,6 +296,13 @@ function ProductList() {
     e.preventDefault();
     setShowCart(false);
   };
+
+  const isItemInCart = (plant) => {
+    return cart.some((item) => item.name === plant.name);
+  };
+
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
   return (
     <div>
       <div className="navbar" style={styleObj}>
@@ -320,6 +331,7 @@ function ProductList() {
             {" "}
             <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
               <h1 className="cart">
+                <span className="cart_quantity_count"> {totalItems} </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 256 256"
@@ -366,8 +378,9 @@ function ProductList() {
                       <button
                         className="product-button"
                         onClick={() => handleAddToCart(plant)}
+                        disabled={isItemInCart(plant)}
                       >
-                        Add to Cart
+                        {isItemInCart(plant) ? "Added to Cart" : "Add to Cart"}
                       </button>
                     </div>
                   ))}
