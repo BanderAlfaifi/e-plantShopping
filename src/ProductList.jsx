@@ -363,18 +363,21 @@ function ProductList() {
             plantsArray.map((product, index) => (
               <div key={index}>
                 <h1>
-                  <div>{product.category}</div>
+                  <div className="plant_heading">{product.category}</div>
                 </h1>
                 <div className="product-list">
                   {product.plants.map((plant, plantIndex) => (
                     <div className="product-card" key={plantIndex}>
+                      <div className="product-title">{plant.name}</div>
                       <img
                         className="product-image"
                         src={plant.image}
                         alt={plant.name}
                       />
-                      <div className="product-title">{plant.name}</div>
+                      <div className="product-price">{plant.cost}</div>
+                      <p className="product-title">{plant.description}</p>
                       {/*Similarly like the above plant.name show other details like description and cost*/}
+
                       <button
                         className="product-button"
                         onClick={() => handleAddToCart(plant)}
